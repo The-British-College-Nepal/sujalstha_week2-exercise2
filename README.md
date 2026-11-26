@@ -3,116 +3,112 @@
 **The British College (Leeds Beckett University) · Sudan Pudasaini**
 
 ```
-Progress: [██████░░░░░░░░░░░░] Step 1 of 3 (In Progress)
+Progress: [████████████░░░░░░] Step 2 of 3 (In Progress)
 ```
 
 ---
 
-## 🎯 Welcome to Your Week 2 Interactive Lab!
+## ✅ Step 1 Complete! Excellent work on `Counter.java`!
 
-Welcome! In this hands-on lab, you will design and implement a **decoupled sentence analysis system** based on the official Leeds Beckett University syllabus.
+You successfully declared the `Counter` interface contract and practiced the Git feature branch workflow.
 
-You will master two essential software engineering skills:
-1. **Java Interfaces & Polymorphism:** Defining abstract method contracts, decoupling caller from callee, and dynamic dispatch via interface types (`Counter wp = new WordProcessor()`).
-2. **Professional Git Branching:** Learning why software engineers never commit directly to `main`, and mastering feature branches (`git checkout -b`, `git branch`, `git merge`).
-
-Just like GitHub Skills exercises:
-1. You work on your dedicated feature branch.
-2. Verify your code with JUnit 5 tests locally in your IDE or terminal.
-3. Merge your branch into `main` and push to GitHub.
-4. GitHub Actions automatically tests your code.
-5. When your tests pass, **this README automatically updates to reveal Step 2!**
+Now, let's implement the concrete class that fulfills this contract.
 
 ---
 
-## 🌿 The Git Branching Rule for Week 2
+## 🌿 Step 2 Git Workflow: Create Your Feature Branch
 
-> [!IMPORTANT]
-> ### 📢 In-Lab Policy: No Direct Commits to `main`!
-> In production engineering teams, `main` represents deployable, stable code. Developers create **feature branches** to isolate work in progress, test safely, and merge cleanly.
-
-### 🧭 Git Branching Quick Reference
-Before writing code for Step 1, open your terminal inside this repository and create your feature branch:
+Before writing code for Step 2, create and switch to a fresh feature branch:
 
 ```bash
-# 1. Ensure your local main is up to date
+# 1. Ensure you have the latest updates on main
 git checkout main
 git pull origin main
 
-# 2. Create and switch to your Step 1 feature branch
-git checkout -b feature/step1-counter
-
-# 3. Confirm you are on your new branch (look for the * asterisk)
-git branch
-```
-
-```
-  main
-* feature/step1-counter
+# 2. Create and switch to your Step 2 feature branch
+git checkout -b feature/step2-wordprocessor
 ```
 
 ---
 
-## 📝 Step 1: Define the `Counter` Interface Contract
+## 📝 Step 2: Implement `WordProcessor.java`
 
-Open [`src/main/java/counter/Counter.java`](src/main/java/counter/Counter.java) in your IDE.
+Open [`src/main/java/counter/WordProcessor.java`](src/main/java/counter/WordProcessor.java) in your IDE.
 
-An interface is a **pure contract**. It specifies *what* operations must be provided, without providing the implementation code. In Java:
-- All methods declared in an interface are implicitly `public` and `abstract` (no curly braces `{}` or method body).
-- An interface cannot be directly instantiated with `new Counter()`, but it can be used as a polymorphic reference type.
+Notice the class header:
+```java
+public class WordProcessor implements Counter
+```
+By using the **`implements`** keyword, `WordProcessor` enters into a contract: it promises the Java compiler that it will provide concrete bodies for all methods declared in `Counter`.
 
 ### Your Tasks:
-1. Open [`src/main/java/counter/Counter.java`](src/main/java/counter/Counter.java).
-2. Declare the three required sentence analysis methods:
-   * **`countWords`:** Accepts a `String sentence` and returns an `int` representing the word count.
+
+1. **Implement `countWords(String sentence)`:**
+   * Words are separated by single spaces.
+   * Use Java's `String.split(" ")` method:
      ```java
-     int countWords(String sentence);
+     return sentence.split(" ").length;
      ```
-   * **`countLetters`:** Accepts a `String sentence` and returns an `int` representing the total alphabetic letter count.
+   * Handle the empty string: if `sentence.isEmpty()`, return `0`.
+
+2. **Implement `countLetters(String sentence)`:**
+   * Iterate through the sentence character by character:
      ```java
-     int countLetters(String sentence);
+     int letters = 0;
+     for (int i = 0; i < sentence.length(); i++) {
+         char ch = sentence.charAt(i);
+         if (Character.isLetter(ch)) {
+             letters++;
+         }
+     }
+     return letters;
      ```
-   * **`getLength`:** Accepts a `String sentence` and returns an `int` representing the total character length (including spaces).
+   * Notice that `Character.isLetter()` only increments for alphabetic characters (`a-z`, `A-Z`). Punctuation, symbols, spaces, and numbers (`0-9`) are correctly ignored!
+
+3. **Implement `getLength(String sentence)`:**
+   * Return the total character count:
      ```java
-     int getLength(String sentence);
+     return sentence.length();
      ```
-3. Add professional **Javadoc documentation** above each method declaration describing:
-   * What the method does.
-   * `@param sentence` — the input string to analyze.
-   * `@return` — the integer result.
+   * Note: The length of a sentence includes spaces and punctuation symbols.
 
 ---
 
-## 🧪 How to Verify Step 1 Locally
+## 🧪 How to Verify Step 2 Locally
 
-Before pushing, verify your implementation with the provided unit test suite:
+Run both Step 1 and Step 2 unit tests:
 
 ```bash
-mvn test -Dtest=Step1CounterTest
+mvn test -Dtest=Step1CounterTest,Step2WordProcessorTest
 ```
-*(Or right-click `Step1CounterTest.java` in IntelliJ / Eclipse / VS Code and select **Run**).*
+*(Or right-click `Step2WordProcessorTest.java` in your IDE and click **Run**).*
 
-You should see **5 passing tests**:
-* ✅ `testCounterIsInterface` — Verifies `Counter` is declared as an interface, not a class.
-* ✅ `testCountWordsDeclaration` — Verifies `countWords(String)` exists, is public, and returns `int`.
-* ✅ `testCountLettersDeclaration` — Verifies `countLetters(String)` exists, is public, and returns `int`.
-* ✅ `testGetLengthDeclaration` — Verifies `getLength(String)` exists, is public, and returns `int`.
-* ✅ `testPolymorphicContract` — Verifies `Counter` can be used as a polymorphic contract type.
+You should see all **10 tests pass**:
+* ✅ `testCounterIsInterface`
+* ✅ `testCountWordsDeclaration`
+* ✅ `testCountLettersDeclaration`
+* ✅ `testGetLengthDeclaration`
+* ✅ `testPolymorphicContract`
+* ✅ `testImplementsCounter` — Confirms `WordProcessor` implements `Counter`.
+* ✅ `testPolymorphicAssignment` — Confirms `Counter wp = new WordProcessor()` compiles and instantiates.
+* ✅ `testCountWords` — Tests words count for short, single, and multi-word sentences.
+* ✅ `testCountLetters` — Tests filtering of letters vs spaces and digits.
+* ✅ `testGetLength` — Tests string length calculations.
 
 ---
 
-## 🚀 How to Advance to Step 2
+## 🚀 How to Advance to Step 3
 
-Once all 5 tests are green, commit your work to your feature branch, merge it into `main`, and push:
+Once your local tests pass:
 
 ```bash
 # 1. Stage and commit on your feature branch
-git add src/main/java/counter/Counter.java
-git commit -m "Step 1: Declared Counter interface contract with Javadoc"
+git add src/main/java/counter/WordProcessor.java
+git commit -m "Step 2: Completed WordProcessor sentence analysis implementation"
 
 # 2. Switch back to main and merge your feature branch
 git checkout main
-git merge feature/step1-counter
+git merge feature/step2-wordprocessor
 
 # 3. Push main to trigger the autograder!
 git push origin main
@@ -120,4 +116,4 @@ git push origin main
 
 > [!TIP]
 > After pushing, wait ~15 seconds and refresh this page on GitHub (or run `git pull` locally).  
-> GitHub Actions will verify your solution and update this `README.md` to unlock **Step 2: Implement WordProcessor.java**!
+> GitHub Actions will verify your solution and update this `README.md` to unlock **Step 3: Encapsulation & Fallback State**!
